@@ -48,3 +48,27 @@ func GetBook(c echo.Context) error {
 		"success", id,
 	})
 }
+
+func DeleteBook(c echo.Context) error {
+	id := c.Param("id")
+
+	var book model.Book
+	result := config.DB.Where("id = ?", id).Find(&book)
+	if result.RowsAffected == 0 {
+		return c.JSON(http.StatusNotFound, model.Response{
+			"failed", "Book not found",
+		})
+	}
+
+	result = config.DB.Delete(&book)
+	if result.Error != nil {
+		return c.JSON(http.StatusInternalServerError, model.Response{
+			"failed to delete book", nil,
+		})
+	}
+
+	return c.JSON(http.StatusOK, model.Response{
+		"book deleted", nil,
+	})
+}
+
