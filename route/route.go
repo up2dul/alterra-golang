@@ -11,5 +11,6 @@ func InitRoute() *echo.Echo {
 	e.POST("/books", controller.AddBook)
 	e.GET("/books", controller.GetAllBooks)
 	e.GET("/books/:id", controller.GetBook)
+	e.DELETE("/books/:id", controller.DeleteBook)
 	return e
 }
